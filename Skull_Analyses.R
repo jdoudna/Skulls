@@ -87,11 +87,14 @@ lm(jaw.size.shape[151:310,4]~jaw.size.shape[151:310,3])
 
 jaw.allometry<-plotAllometry(jaw.gpa$coords, jaw.gpa$Csize, groups=jawlocation, method = c( "CAC", "RegScore", "PredLine"),
 warpgrids = TRUE, label = FALSE)
-jaw.size.shape<-cbind(jawyear, jawlocation, jaw.allometry$Csize, jaw.allometry$allom.score)
+jaw.size.shape<-data.frame(jawyear, jawlocation, jaw.allometry$Csize, jaw.allometry$allom.score)
 ###write.csv(jaw.size.shape, file = "Jaw CACs.csv")
 
-mean.CACs.jaws<-ddply(jaw.size.shape, .(jawlocation), summarize, mean.jaw.CAC<-mean[,4]
-mean.Csizes.jaws<-ddply(jaw.size.shape, .(jawlocation), summarize, mean.jaw.Csize<-mean[,3]
+colnames(jaw.size.shape) <- c("Jaw_Year", "Jaw_Location", "Csize", "CAC")
+split.jaws<-split(jaw.size.shape, jaw.size.shape$Jaw_Location)
+
+mean.CACs.jaws<-ddply(jaw.size.shape, .(Jaw_Location), summarize, mean.jaw.CAC<-mean(CAC))
+mean.Csizes.jaws<-ddply(jaw.size.shape, .(Jaw_Location), summarize, mean.jaw.Csize<-mean(Csize))
 
 
 mod4<-aov(jaw.size.shape[,4]~jaw.size.shape[,3]*jaw.size.shape[,1])
