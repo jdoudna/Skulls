@@ -3,6 +3,7 @@
 ######31 October 2013###########
 ####seperate analysis of jaw and skull - includes Chariton########
 #raw data with metadata
+###trial for git
 
 library(geomorph)
 library(gplots)
